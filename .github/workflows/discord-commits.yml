@@ -1,0 +1,21 @@
+name: Discord Commit Notifications
+
+on:
+  push:
+    branches: [ main, master, develop ]
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send commit info to Discord
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          title: "Новый коммит в ${{ github.repository }}"
+          description: |
+            **Автор:** ${{ github.actor }}
+            **Сообщение:** ${{ github.event.head_commit.message }}
+            **Ветка:** ${{ github.ref }}
+          color: "0x00FF00"
+          url: ${{ github.event.head_commit.url }}
